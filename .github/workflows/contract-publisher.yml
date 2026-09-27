@@ -1,0 +1,61 @@
+name: Publish OpenAPI Contract
+
+on:
+  push:
+    branches: [ main, master ] # Dispara toda vez que houver push na branch principal
+
+jobs:
+  publish-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório Backend
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Compilar e Testar Backend
+        run: ./mvnw clean test
+
+      - name: Iniciar Spring Boot em background
+        run: |
+          ./mvnw spring-boot:run &
+          # Aguarda a aplicação subir completamente
+          sleep 15
+
+      - name: Baixar o JSON do OpenAPI
+        run: |
+          curl -s http://localhost:8080/v3/api-docs > openapi.json
+          cat openapi.json
+
+      - name: Enviar contrato para a pasta contracts do repositório mini-erp-doc
+        env:
+          DOCS_TOKEN: ${{ secrets.DOCS_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "bot@minierp.local"
+          
+          # 1. Clona o repositório de documentação usando o Token
+          git clone https://x-access-token:${DOCS_TOKEN}@github.com/Psykdragonblad/mini-erp-doc.git temp-docs
+          
+          # 2. Garante que a pasta contracts existe dentro do repo clonado
+          mkdir -p temp-docs/contracts
+          
+          # 3. Copia o novo contrato para dentro da pasta contracts
+          cp openapi.json temp-docs/contracts/openapi.json
+          
+          cd temp-docs
+          
+          # 4. Verifica se houve mudanças reais no arquivo antes de commitar
+          if git diff --quiet contracts/openapi.json; then
+            echo "O contrato OpenAPI não sofreu alterações."
+          else
+            git add contracts/openapi.json
+            git commit -m "chore: atualiza contrato openapi via CI do backend [skip ci]"
+            git push origin main
+            echo "Contrato atualizado com sucesso no mini-erp-doc!"
+          fi
