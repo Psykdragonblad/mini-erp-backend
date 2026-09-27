@@ -1,0 +1,48 @@
+name: Backend CI - Mini-ERP
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # Serviço de banco PostgreSQL rodando em container na esteira para testar as migrations do Flyway
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: minierp_db_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar o JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Dar permissão de execução ao Maven Wrapper
+        run: chmod +x mvnw
+
+      - name: Compilar e Rodar Testes com Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/minierp_db_test
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: password
+        run: ./mvnw clean verify

@@ -1,0 +1,7 @@
+CREATE TABLE produtos (
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    preco NUMERIC(15, 2) NOT NULL,
+    quantidade_estoque INT NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
