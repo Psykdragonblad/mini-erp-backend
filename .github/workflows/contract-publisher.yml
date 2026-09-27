@@ -73,11 +73,14 @@ jobs:
           
           cd temp-docs
           
-          if git diff --quiet contracts/openapi.json; then
+          # Adiciona o arquivo para que o git passe a rastreá-lo
+          git add contracts/openapi.json
+          
+          # Verifica se há mudanças (seja arquivo novo ou modificado)
+          if git diff --staged --quiet; then
             echo "O contrato OpenAPI não sofreu alterações."
           else
-            git add contracts/openapi.json
             git commit -m "chore: atualiza contrato openapi via CI do backend [skip ci]"
             git push origin main
-            echo "Contrato atualizado com sucesso no mini-erp-doc!"
+            echo "Contrato atualizado com sucesso no mini-erp-docs!"
           fi
