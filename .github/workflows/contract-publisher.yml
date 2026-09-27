@@ -18,8 +18,10 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
-      - name: Compilar e Testar Backend
-        run: ./mvnw clean test
+      - name: Dar permissão ao Maven Wrapper e Compilar
+        run: |
+          chmod +x ./mvnw
+          ./mvnw clean test
 
       - name: Iniciar Spring Boot em background
         run: |
