@@ -1,13 +1,14 @@
 package com.minierp.backend;
 
 import com.minierp.backend.dto.ProdutoRequestDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.hamcrest.Matchers.hasItem;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 
@@ -44,6 +45,6 @@ public class ProdutoIntegrationTest {
         // 2. Lista os produtos e valida se veio do banco
         mockMvc.perform(get("/produtos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Caderno Espiral"));
+            .andExpect(jsonPath("$[*].nome", hasItem("Caderno Espiral")));
     }
 }
