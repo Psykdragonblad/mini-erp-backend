@@ -36,7 +36,7 @@ public class ProdutoControllerUnitTest {
     @Test
     public void deveRetornarCriadoAoCadastrarProdutoValido() throws Exception {
         ProdutoRequestDTO request = new ProdutoRequestDTO();
-        request.setNome("Caneta Azul");
+        request.setNome("Caneta Azul"); 
         request.setPreco(new BigDecimal("2.50"));
         request.setQuantidadeEstoque(100);
 
