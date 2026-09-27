@@ -66,7 +66,7 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "bot@minierp.local"
           
-          git clone https://x-access-token:${DOCS_TOKEN}@github.com/Psykdragonblad/mini-erp-doc.git temp-docs
+          git clone https://x-access-token:${DOCS_TOKEN}@github.com/Psykdragonblad/mini-erp-docs.git temp-docs
           
           mkdir -p temp-docs/contracts
           cp openapi.json temp-docs/contracts/openapi.json
