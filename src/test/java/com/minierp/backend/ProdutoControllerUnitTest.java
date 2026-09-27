@@ -38,7 +38,7 @@ public class ProdutoControllerUnitTest {
         ProdutoRequestDTO request = new ProdutoRequestDTO();
         request.setNome("Caneta Azul"); 
         request.setPreco(new BigDecimal("2.50"));
-        request.setQuantidadeEstoque(100);
+        request.setQuantidadeEstoque(100); 
 
         Produto produtoSalvo = new Produto();
         produtoSalvo.setId(1L);
