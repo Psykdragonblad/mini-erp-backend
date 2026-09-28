@@ -8,6 +8,7 @@ public class ProdutoResponseDTO {
 
     private Long id;
     private String nome;
+    private String descricao;
     private BigDecimal preco;
     private Integer quantidadeEstoque;
     private LocalDateTime criadoEm;
@@ -26,4 +27,5 @@ public class ProdutoResponseDTO {
     public BigDecimal getPreco() { return preco; }
     public Integer getQuantidadeEstoque() { return quantidadeEstoque; }
     public LocalDateTime getCriadoEm() { return criadoEm; }
+    public String getDescricao() { return descricao; }
 }

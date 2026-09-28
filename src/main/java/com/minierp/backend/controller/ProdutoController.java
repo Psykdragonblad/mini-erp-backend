@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.http.MediaType;
 
 @RestController
 @RequestMapping("/produtos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProdutoController {
 
     private final ProdutoRepository produtoRepository;
@@ -33,7 +35,7 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponseDTO(salvo));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProdutoResponseDTO>> listar() {
         List<ProdutoResponseDTO> produtos = produtoRepository.findAll()
                 .stream()
