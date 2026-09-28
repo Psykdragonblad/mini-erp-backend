@@ -16,7 +16,7 @@ public class ProdutoResponseDTO {
     public ProdutoResponseDTO(Produto produto) {
         this.id = produto.getId();
         this.nome = produto.getNome();
-        this.preco = produto.getPreco();
+        //this.preco = produto.getPreco();
         this.quantidadeEstoque = produto.getQuantidadeEstoque();
         this.criadoEm = produto.getCriado_em();
     }
@@ -24,7 +24,7 @@ public class ProdutoResponseDTO {
     // Getters
     public Long getId() { return id; }
     public String getNome() { return nome; }
-    public BigDecimal getPreco() { return preco; }
+    //public BigDecimal getPreco() { return preco; }
     public Integer getQuantidadeEstoque() { return quantidadeEstoque; }
     public LocalDateTime getCriadoEm() { return criadoEm; }
     public String getDescricao() { return descricao; }
